@@ -16,5 +16,13 @@
     "minimum-stability": "stable",
     "require": {
         "php": "^8.1"
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.5"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
