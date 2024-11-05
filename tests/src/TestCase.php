@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Upward\Formatters\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 

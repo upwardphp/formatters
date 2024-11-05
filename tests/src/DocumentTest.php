@@ -1,5 +1,5 @@
 <?php
 
-test('example', function () {
+it('can write a document', function () {
     expect(true)->toBeTrue();
 });

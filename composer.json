@@ -20,6 +20,9 @@
     "require-dev": {
         "pestphp/pest": "^3.5"
     },
+    "autoload-dev": {
+        "Upward\\Formatters\\Tests\\": "tests/src"
+    },
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": true
