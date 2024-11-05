@@ -1,0 +1,20 @@
+{
+    "name": "upward/formatters",
+    "description": "Formatters utils",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Upward\\Formatters\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Victor",
+            "email": "victorhbbergamo@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.1"
+    }
+}
