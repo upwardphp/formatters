@@ -6,6 +6,7 @@ use Upward\Formatters\Contracts\Document;
 use Upward\Formatters\Exceptions\Documents\CpfSequenceException;
 use Upward\Formatters\Exceptions\Documents\InvalidCpfException;
 use Upward\Formatters\Exceptions\Documents\InvalidDocumentException;
+use Upward\Formatters\Mask;
 
 class CpfDocument implements Document
 {
@@ -41,11 +42,7 @@ class CpfDocument implements Document
         $digits = $this->onlyDigits($this->value);
 
         // Apply the CPF mask
-        return preg_replace(
-            pattern: '/(\d{3})(\d{3})(\d{3})(\d{2})/',
-            replacement: '$1.$2.$3-$4',
-            subject: $digits,
-        );
+        return (new Mask(input: $digits, output: '###.###.###-##'))->format();
     }
 
     private function onlyDigits(string $value): string

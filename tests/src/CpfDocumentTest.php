@@ -40,7 +40,7 @@ describe(description: 'Format', tests: function (): void {
     });
 
     it('should not be able to format CPF with invalid digits', function (): void {
-        $document = new Document(new CpfDocument(value: '867307840750'));
+        $document = new Document(new CpfDocument(value: '0867307840750'));
 
         expect(value: $document->format())
             ->not
