@@ -2,12 +2,28 @@
 
 namespace Upward\Formatters;
 
-use Upward\Formatters\Documents\CpfDocument;
+use Upward\Formatters\Contracts\Document as DocumentInterface;
 
 class Document
 {
-    public function cpf(string $document): CpfDocument
+    public function __construct(
+        private readonly DocumentInterface $document,
+    )
     {
-        return new CpfDocument($document);
+    }
+
+    public function validate(): void
+    {
+        $this->document->validate();
+    }
+
+    public function format(): string
+    {
+        return $this->document->format();
+    }
+
+    public function sanitize(): string
+    {
+        return $this->document->sanitize();
     }
 }
