@@ -57,4 +57,23 @@ class Mask
 
         throw new \InvalidArgumentException(message: '$text cannot be different of string.');
     }
+
+    public function replacementUsing(array|string|Closure $replacements): static
+    {
+        if (is_callable(value: $replacements)) {
+            $replacements = $replacements();
+        }
+
+        if (is_array(value: $replacements)) {
+            $this->replacements = $replacements;
+            return $this;
+        }
+
+        if (is_string(value: $replacements)) {
+            $this->replacements = [$replacements];
+            return $this;
+        }
+
+        throw new \InvalidArgumentException(message: '$replacements cannot be different of string|array.');
+    }
 }
