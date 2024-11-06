@@ -21,9 +21,4 @@ class Document
     {
         return $this->document->format();
     }
-
-    public function sanitize(): string
-    {
-        return $this->document->sanitize();
-    }
 }
