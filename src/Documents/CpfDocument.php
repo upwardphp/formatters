@@ -14,13 +14,64 @@ class CpfDocument implements Document
 
     public function validate(): void
     {
+        // Extract only numbers
+        $digits = $this->onlyDigits($this->value);
+
+        // Has all digits
+        if (strlen($digits) != 11) {
+            throw new \Exception(message: 'Invalid document.');
+        }
+
+        // Has sequence. Ex: 111.111.111-11
+        if ($this->hasSequenceIn(value: $digits)) {
+            throw new \Exception(message: 'Invalid document.');
+        }
+
+        // calc to verify CPF
+        if (!$this->verify($digits)) {
+            throw new \Exception(message: 'Invalid document.');
+        }
     }
 
     public function format(): string
     {
+        // Remove all non-numeric characters
+        $cpf = preg_replace('/[^0-9]/', '', $this->value);
+
+        // Apply the CPF mask
+        return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $cpf);
     }
 
     public function sanitize(): string
     {
+    }
+
+    private function onlyDigits(string $value): string
+    {
+        return preg_replace(
+            pattern: '/[^0-9]/is',
+            replacement: '',
+            subject: $value,
+        );
+    }
+
+    private function hasSequenceIn(string $value): bool
+    {
+        return preg_match(pattern: '/(\d)\1{10}/', subject: $value);
+    }
+
+    private function verify(string $digits): bool
+    {
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++) {
+                $d += $digits[$c] * (($t + 1) - $c);
+            }
+            $d = ((10 * $d) % 11) % 10;
+            if ($digits[$c] != $d) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
