@@ -38,11 +38,14 @@ class CpfDocument implements Document
 
     public function format(): string
     {
-        // Remove all non-numeric characters
-        $cpf = preg_replace('/[^0-9]/', '', $this->value);
+        $digits = $this->onlyDigits($this->value);
 
         // Apply the CPF mask
-        return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $cpf);
+        return preg_replace(
+            pattern: '/(\d{3})(\d{3})(\d{3})(\d{2})/',
+            replacement: '$1.$2.$3-$4',
+            subject: $digits,
+        );
     }
 
     public function sanitize(): string
