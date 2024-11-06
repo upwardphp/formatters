@@ -21,4 +21,9 @@ class Document
     {
         return $this->document->format();
     }
+
+    public function anonymize(): string
+    {
+        return $this->document->anonymize();
+    }
 }

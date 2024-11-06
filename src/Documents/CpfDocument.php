@@ -41,8 +41,15 @@ class CpfDocument implements Document
     {
         $digits = $this->onlyDigits($this->value);
 
-        // Apply the CPF mask
         return (new Mask(input: $digits, output: '###.###.###-##'))->format();
+    }
+
+    public function anonymize(): string
+    {
+        return (new Mask(input: $this->onlyDigits($this->value), output: '###.***.***-##'))
+            ->obscureUsing(text: '*')
+            ->replacementUsing(replacements: '#')
+            ->format();
     }
 
     private function onlyDigits(string $value): string

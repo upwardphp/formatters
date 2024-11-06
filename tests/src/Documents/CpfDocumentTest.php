@@ -39,6 +39,13 @@ describe(description: 'Format', tests: function (): void {
             ->toBe(expected: '867.307.840-75');
     });
 
+    it('should be able anonymize CPF document', function (): void {
+        $document = new Document(new CpfDocument(value: '86730784075'));
+
+        expect(value: $document->anonymize())
+            ->toBe('867.***.***-75');
+    });
+
     it('should not be able to format CPF with invalid digits', function (): void {
         $document = new Document(new CpfDocument(value: '0867307840750'));
 
@@ -46,4 +53,5 @@ describe(description: 'Format', tests: function (): void {
             ->not
             ->toBe(expected: '867.307.840-75');
     });
+
 });
