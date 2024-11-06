@@ -47,4 +47,3 @@ describe(description: 'Format', tests: function (): void {
             ->toBe(expected: '867.307.840-75');
     });
 });
-
