@@ -3,6 +3,9 @@
 namespace Upward\Formatters\Documents;
 
 use Upward\Formatters\Contracts\Document;
+use Upward\Formatters\Exceptions\Documents\CpfSequenceException;
+use Upward\Formatters\Exceptions\Documents\InvalidCpfException;
+use Upward\Formatters\Exceptions\Documents\InvalidDocumentException;
 
 class CpfDocument implements Document
 {
@@ -19,17 +22,17 @@ class CpfDocument implements Document
 
         // Has all digits
         if (strlen($digits) != 11) {
-            throw new \Exception(message: 'Invalid document.');
+            throw InvalidDocumentException::make(value: $digits);
         }
 
         // Has sequence. Ex: 111.111.111-11
         if ($this->hasSequenceIn(value: $digits)) {
-            throw new \Exception(message: 'Invalid document.');
+            throw CpfSequenceException::make(value: $digits);
         }
 
         // calc to verify CPF
         if (!$this->verify($digits)) {
-            throw new \Exception(message: 'Invalid document.');
+            throw InvalidCpfException::make(value: $digits);
         }
     }
 
