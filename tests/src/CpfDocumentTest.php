@@ -30,3 +30,21 @@ describe(description: 'Validation', tests: function (): void {
         '33333333333',
     ]);
 });
+
+describe(description: 'Format', tests: function (): void {
+    it('should be able format CPF', function (): void {
+        $document = new Document(new CpfDocument(value: '86730784075'));
+
+        expect(value: $document->format())
+            ->toBe(expected: '867.307.840-75');
+    });
+
+    it('should not be able to format CPF with invalid digits', function (): void {
+        $document = new Document(new CpfDocument(value: '867307840750'));
+
+        expect(value: $document->format())
+            ->not
+            ->toBe(expected: '867.307.840-75');
+    });
+});
+
