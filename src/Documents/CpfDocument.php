@@ -48,10 +48,6 @@ class CpfDocument implements Document
         );
     }
 
-    public function sanitize(): string
-    {
-    }
-
     private function onlyDigits(string $value): string
     {
         return preg_replace(
