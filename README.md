@@ -78,10 +78,9 @@ $cpf = new CpfDocument('12345678901');
 
 // Define custom validation logic
 $cpf->modifyValidateUsing(function (CpfDocument $document): void {
-  if (strlen($document->value()) !== 11) {
-    throw new \InvalidArgumentException('Invalid CPF length.');
-  }
-  // Add additional validation rules here
+    if (strlen($document->value()) !== 11) {
+        throw new \InvalidArgumentException('Invalid CPF length.');
+    }
 });
 
 $cpf->validate(); // Executes the custom validation logic
@@ -99,7 +98,6 @@ CpfDocument::$validateUsing = function (CpfDocument $document): void {
         throw new \InvalidArgumentException('Invalid CPF length.');
     }
 
-    // Additional validation rules
     if (!ctype_digit($document->value())) {
         throw new \InvalidArgumentException('CPF must contain only numbers.');
     }
