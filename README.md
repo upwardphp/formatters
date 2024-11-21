@@ -103,3 +103,24 @@ CpfDocument::$validateUsing = function (CpfDocument $document): void {
     }
 };
 ```
+
+#### Modify Document Mask
+Use `modifyMaskUsing` to apply custom formatting or masking to the document value. This feature allows you to modify the format of the document based on a callback function:
+
+```php
+use Upward\Formatters\Documents\CpfDocument;
+use Upward\Formatters\Document;
+use Upward\Formatters\Mask;
+
+$cpf = new CpfDocument('12345678901');
+
+// Modify the mask of the document
+$cpf->modifyMaskUsing(callback: static function (CpfDocument $document): string {
+    return (new Mask(input: $document->value(), output: '***.###.###-**'))->format();
+});
+
+$document = new Document($cpf);
+
+echo $document->anonymize(); // output: ***.456.789-**
+
+```
