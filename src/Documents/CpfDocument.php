@@ -13,6 +13,8 @@ class CpfDocument implements Document
 {
     public static Closure|null $validateUsing = null;
 
+    public static Closure|null $maskUsing = null;
+
     public function __construct(
         private string $value,
     )
@@ -58,10 +60,12 @@ class CpfDocument implements Document
 
     public function anonymize(): string
     {
-        return (new Mask(input: $this->onlyDigits($this->value), output: '###.***.***-##'))
-            ->obscureUsing(text: '*')
-            ->replacementUsing(replacements: '#')
-            ->format();
+        return static::$maskUsing ?
+            (static::$maskUsing)($this) :
+            (new Mask(input: $this->onlyDigits($this->value), output: '###.***.***-##'))
+                ->obscureUsing(text: '*')
+                ->replacementUsing(replacements: '#')
+                ->format();
     }
 
     private function onlyDigits(string $value): string
@@ -96,6 +100,12 @@ class CpfDocument implements Document
     public function modifyValidateUsing(Closure $callback): static
     {
         static::$validateUsing = $callback;
+        return $this;
+    }
+
+    public function modifyMaskUsing(Closure $callback): static
+    {
+        static::$maskUsing = $callback;
         return $this;
     }
 }

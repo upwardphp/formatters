@@ -4,6 +4,7 @@ use Upward\Formatters\Document;
 use Upward\Formatters\Documents\CpfDocument;
 use Upward\Formatters\Exceptions\Documents\CpfSequenceException;
 use Upward\Formatters\Exceptions\Documents\InvalidCpfException;
+use Upward\Formatters\Mask;
 
 describe(description: 'Validation', tests: function (): void {
     it('should be able a valid CPF document', function (): void {
@@ -67,6 +68,19 @@ describe(description: 'Format', tests: function (): void {
 
         expect(value: $document->anonymize())
             ->toBe('867.***.***-75');
+    });
+
+    it('should be able modify anonymization', function (): void {
+        $cpf = new CpfDocument(value: '86730784075');
+
+        $cpf->modifyMaskUsing(callback: static function (CpfDocument $document): string {
+            return (new Mask(input: $document->value(), output: '***.###.###-**'))->format();
+        });
+
+        $document = new Document($cpf);
+
+        expect(value: $document->anonymize())
+            ->toBe('***.307.840-**');
     });
 
     it('should not be able to format CPF with invalid digits', function (): void {
