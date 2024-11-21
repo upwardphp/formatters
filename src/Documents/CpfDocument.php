@@ -2,6 +2,7 @@
 
 namespace Upward\Formatters\Documents;
 
+use Closure;
 use Upward\Formatters\Contracts\Document;
 use Upward\Formatters\Exceptions\Documents\CpfSequenceException;
 use Upward\Formatters\Exceptions\Documents\InvalidCpfException;
@@ -10,6 +11,8 @@ use Upward\Formatters\Mask;
 
 class CpfDocument implements Document
 {
+    public static Closure|null $validateUsing = null;
+
     public function __construct(
         private string $value,
     )
@@ -24,6 +27,12 @@ class CpfDocument implements Document
 
     public function validate(): void
     {
+        if (static::$validateUsing) {
+            $callback = static::$validateUsing;
+            $callback($this);
+            return;
+        }
+
         // Has all digits
         if (strlen($this->value) != 11) {
             throw InvalidDocumentException::make(value: $this->value);
@@ -82,5 +91,11 @@ class CpfDocument implements Document
         }
 
         return true;
+    }
+
+    public function modifyValidateUsing(Closure $callback): static
+    {
+        static::$validateUsing = $callback;
+        return $this;
     }
 }

@@ -29,6 +29,20 @@ describe(description: 'Validation', tests: function (): void {
         '22222222222',
         '33333333333',
     ]);
+
+    it('should be able modify validation', function (): void {
+        $cpf = new CpfDocument(value: '86730784075');
+
+        $cpf->modifyValidateUsing(
+            callback: static function (CpfDocument $document): void {
+                throw new DomainException();
+            }
+        );
+
+        $document = new Document($cpf);
+
+        expect(value: fn () => $document->validate())->toThrow(DomainException::class);
+    });
 });
 
 describe(description: 'Value', tests: function (): void {
