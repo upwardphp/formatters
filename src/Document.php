@@ -12,6 +12,11 @@ class Document
     {
     }
 
+    public function value(): mixed
+    {
+        return $this->document->value();
+    }
+
     public function validate(): void
     {
         $this->document->validate();

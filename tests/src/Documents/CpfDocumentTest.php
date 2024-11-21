@@ -31,6 +31,15 @@ describe(description: 'Validation', tests: function (): void {
     ]);
 });
 
+describe(description: 'Value', tests: function (): void {
+    it('should be only digits', function (): void {
+        $document = new Document(new CpfDocument(value: '86730784075   a'));
+
+        expect(value: $document->value())
+            ->toBe(expected: '86730784075');
+    });
+});
+
 describe(description: 'Format', tests: function (): void {
     it('should be able format CPF', function (): void {
         $document = new Document(new CpfDocument(value: '86730784075'));

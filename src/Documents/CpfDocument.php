@@ -11,29 +11,32 @@ use Upward\Formatters\Mask;
 class CpfDocument implements Document
 {
     public function __construct(
-        private readonly string $value,
+        private string $value,
     )
     {
+        $this->value = $this->onlyDigits(value: $this->value);
+    }
+
+    public function value(): string
+    {
+        return $this->value;
     }
 
     public function validate(): void
     {
-        // Extract only numbers
-        $digits = $this->onlyDigits($this->value);
-
         // Has all digits
-        if (strlen($digits) != 11) {
-            throw InvalidDocumentException::make(value: $digits);
+        if (strlen($this->value) != 11) {
+            throw InvalidDocumentException::make(value: $this->value);
         }
 
         // Has sequence. Ex: 111.111.111-11
-        if ($this->hasSequenceIn(value: $digits)) {
-            throw CpfSequenceException::make(value: $digits);
+        if ($this->hasSequenceIn(value: $this->value)) {
+            throw CpfSequenceException::make(value: $this->value);
         }
 
         // calc to verify CPF
-        if (!$this->verify($digits)) {
-            throw InvalidCpfException::make(value: $digits);
+        if (!$this->verify($this->value)) {
+            throw InvalidCpfException::make(value: $this->value);
         }
     }
 
