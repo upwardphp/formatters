@@ -3,6 +3,8 @@
 namespace Upward\Formatters\Documents;
 
 use Closure;
+use Upward\Formatters\Attributes\OnlyDigits;
+use Upward\Formatters\Concerns\Sanitization;
 use Upward\Formatters\Contracts\Document;
 use Upward\Formatters\Exceptions\Documents\CpfSequenceException;
 use Upward\Formatters\Exceptions\Documents\InvalidCpfException;
@@ -11,15 +13,17 @@ use Upward\Formatters\Mask;
 
 class CpfDocument implements Document
 {
+    use Sanitization;
+
     public static Closure|null $validateUsing = null;
 
     public static Closure|null $maskUsing = null;
 
     public function __construct(
+        #[OnlyDigits]
         private string $value,
     )
     {
-        $this->value = $this->onlyDigits(value: $this->value);
     }
 
     public function value(): string
@@ -66,15 +70,6 @@ class CpfDocument implements Document
                 ->obscureUsing(text: '*')
                 ->replacementUsing(replacements: '#')
                 ->format();
-    }
-
-    private function onlyDigits(string $value): string
-    {
-        return preg_replace(
-            pattern: '/[^0-9]/is',
-            replacement: '',
-            subject: $value,
-        );
     }
 
     private function hasSequenceIn(string $value): bool

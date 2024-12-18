@@ -3,6 +3,9 @@
     "description": "Formatters utils",
     "license": "MIT",
     "autoload": {
+        "files": [
+            "src/Helpers/sanitization.php"
+        ],
         "psr-4": {
             "Upward\\Formatters\\": "src/"
         }

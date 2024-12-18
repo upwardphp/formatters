@@ -2,14 +2,18 @@
 
 namespace Upward\Formatters;
 
+use Upward\Formatters\Concerns\AttributesModifiers;
 use Upward\Formatters\Contracts\Document as DocumentInterface;
 
 class Document
 {
+    use AttributesModifiers;
+
     public function __construct(
         private readonly DocumentInterface $document,
     )
     {
+        $this->inspect($this->document);
     }
 
     public function value(): mixed
