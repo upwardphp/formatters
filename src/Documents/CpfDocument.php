@@ -2,12 +2,10 @@
 
 namespace Upward\Formatters\Documents;
 
-use Closure;
 use Upward\Formatters\Attributes\OnlyDigits;
 use Upward\Formatters\Concerns\CustomAnonymizer;
 use Upward\Formatters\Concerns\CustomValidation;
 use Upward\Formatters\Concerns\Evaluation;
-use Upward\Formatters\Concerns\Sanitization;
 use Upward\Formatters\Contracts\Document;
 use Upward\Formatters\Exceptions\Documents\CpfSequenceException;
 use Upward\Formatters\Exceptions\Documents\InvalidCpfException;
