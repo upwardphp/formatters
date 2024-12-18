@@ -4,6 +4,7 @@ use Upward\Formatters\Document;
 use Upward\Formatters\Documents\CnpjDocument;
 use Upward\Formatters\Exceptions\Documents\CnpjSequenceException;
 use Upward\Formatters\Exceptions\Documents\InvalidCnpjException;
+use Upward\Formatters\Mask;
 
 describe(description: 'Validation', tests: function (): void {
     it('should be able a valid document', function (): void {
@@ -42,5 +43,51 @@ describe(description: 'Validation', tests: function (): void {
         $document = new Document($cnpj);
 
         expect(value: fn () => $document->validate())->toThrow(DomainException::class);
+    });
+});
+
+describe(description: 'Value', tests: function (): void {
+    it('should be only digits', function (): void {
+        $document = new Document(new CnpjDocument(value: '61779852000114    f'));
+
+        expect(value: $document->value())
+            ->toBe(expected: '61779852000114');
+    });
+});
+
+describe(description: 'Format', tests: function (): void {
+    it('should be able format CNPJ', function (): void {
+        $document = new Document(new CnpjDocument(value: '61779852000114'));
+
+        expect(value: $document->format())
+            ->toBe(expected: '61.779.852/0001-14');
+    });
+
+    it('should be able anonymize CNPJ document', function (): void {
+        $document = new Document(new CnpjDocument(value: '61779852000114'));
+
+        expect(value: $document->anonymize())
+            ->toBe('61.***.***/0001-14');
+    });
+
+    it('should be able modify anonymization', function (): void {
+        $cnpj = new CnpjDocument(value: '61779852000114');
+
+        $cnpj->modifyMaskUsing(callback: static function (CnpjDocument $document): string {
+            return (new Mask(input: $document->value(), output: '**.###.###/****-##'))->format();
+        });
+
+        $document = new Document($cnpj);
+
+        expect(value: $document->anonymize())
+            ->toBe('**.779.852/****-14');
+    });
+
+    it('should not be able to format CNPJ with invalid digits', function (): void {
+        $document = new Document(new CnpjDocument(value: '061779852000114'));
+
+        expect(value: $document->format())
+            ->not
+            ->toBe(expected: '61.779.852/0001-14');
     });
 });

@@ -9,6 +9,7 @@ use Upward\Formatters\Concerns\Evaluation;
 use Upward\Formatters\Contracts\Document;
 use Upward\Formatters\Exceptions\Documents\CnpjSequenceException;
 use Upward\Formatters\Exceptions\Documents\InvalidCnpjException;
+use Upward\Formatters\Mask;
 
 class CnpjDocument implements Document
 {
@@ -42,10 +43,16 @@ class CnpjDocument implements Document
 
     public function format(): string
     {
+        return (new Mask(input: $this->value, output: '##.###.###/####-##'))->format();
     }
 
     public function anonymize(): string
     {
+        return $this->evaluate(modifier: static::$maskUsing, document: $this)
+            ?: (new Mask(input: $this->value, output: '##.***.***/####-##'))
+                ->obscureUsing(text: '*')
+                ->replacementUsing(replacements: '#')
+                ->format();
     }
 
     /**
