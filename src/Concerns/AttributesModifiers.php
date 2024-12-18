@@ -4,7 +4,6 @@ namespace Upward\Formatters\Concerns;
 
 use ReflectionClass;
 use Upward\Formatters\Contracts\Document;
-use Upward\Formatters\Contracts\SanitizationAttribute;
 use Upward\Formatters\Support\SanitizationAttributeResolver;
 
 trait AttributesModifiers
