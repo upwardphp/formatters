@@ -3,6 +3,7 @@
 namespace Upward\Formatters\Documents;
 
 use Upward\Formatters\Attributes\OnlyDigits;
+use Upward\Formatters\Concerns\CustomAnonymizer;
 use Upward\Formatters\Concerns\CustomValidation;
 use Upward\Formatters\Concerns\Evaluation;
 use Upward\Formatters\Contracts\Document;
@@ -12,6 +13,7 @@ use Upward\Formatters\Exceptions\Documents\InvalidCnpjException;
 class CnpjDocument implements Document
 {
     use CustomValidation;
+    use CustomAnonymizer;
     use Evaluation;
 
     public function __construct(

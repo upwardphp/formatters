@@ -4,6 +4,9 @@ namespace Upward\Formatters\Documents;
 
 use Closure;
 use Upward\Formatters\Attributes\OnlyDigits;
+use Upward\Formatters\Concerns\CustomAnonymizer;
+use Upward\Formatters\Concerns\CustomValidation;
+use Upward\Formatters\Concerns\Evaluation;
 use Upward\Formatters\Concerns\Sanitization;
 use Upward\Formatters\Contracts\Document;
 use Upward\Formatters\Exceptions\Documents\CpfSequenceException;
@@ -13,11 +16,9 @@ use Upward\Formatters\Mask;
 
 class CpfDocument implements Document
 {
-    use Sanitization;
-
-    public static Closure|null $validateUsing = null;
-
-    public static Closure|null $maskUsing = null;
+    use CustomValidation;
+    use CustomAnonymizer;
+    use Evaluation;
 
     public function __construct(
         #[OnlyDigits]
@@ -34,8 +35,7 @@ class CpfDocument implements Document
     public function validate(): void
     {
         if (static::$validateUsing) {
-            $callback = static::$validateUsing;
-            $callback($this);
+            $this->evaluate(modifier: static::$validateUsing, document: $this);
             return;
         }
 
@@ -57,16 +57,14 @@ class CpfDocument implements Document
 
     public function format(): string
     {
-        $digits = $this->onlyDigits($this->value);
-
-        return (new Mask(input: $digits, output: '###.###.###-##'))->format();
+        return (new Mask(input: $this->value, output: '###.###.###-##'))->format();
     }
 
     public function anonymize(): string
     {
         return static::$maskUsing ?
             (static::$maskUsing)($this) :
-            (new Mask(input: $this->onlyDigits($this->value), output: '###.***.***-##'))
+            (new Mask(input: $this->value, output: '###.***.***-##'))
                 ->obscureUsing(text: '*')
                 ->replacementUsing(replacements: '#')
                 ->format();
@@ -90,17 +88,5 @@ class CpfDocument implements Document
         }
 
         return true;
-    }
-
-    public function modifyValidateUsing(Closure $callback): static
-    {
-        static::$validateUsing = $callback;
-        return $this;
-    }
-
-    public function modifyMaskUsing(Closure $callback): static
-    {
-        static::$maskUsing = $callback;
-        return $this;
     }
 }
