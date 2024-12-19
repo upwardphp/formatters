@@ -2,9 +2,7 @@
 
 namespace Upward\Formatters\Exceptions\Documents;
 
-use Exception;
-
-class InvalidCpfException extends Exception
+class InvalidCpfException extends InvalidDocumentException
 {
     public static function make(string $value): InvalidCpfException
     {

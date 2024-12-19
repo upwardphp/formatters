@@ -15,3 +15,4 @@ composer require upward/formatters
 - [Overview](docs/documents/OVERVIEW.md)
 - [CPF](docs/documents/CPF.md)
 - [CNPJ](docs/documents/CNPJ.md)
+- [Folder](docs/documents/FOLDER.md)
