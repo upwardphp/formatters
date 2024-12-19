@@ -4,7 +4,8 @@
     "license": "MIT",
     "autoload": {
         "files": [
-            "src/Helpers/sanitization.php"
+            "src/Helpers/sanitization.php",
+            "src/Helpers/document.php"
         ],
         "psr-4": {
             "Upward\\Formatters\\": "src/"
