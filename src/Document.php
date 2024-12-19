@@ -10,7 +10,7 @@ class Document
     use AttributesModifiers;
 
     public function __construct(
-        private readonly DocumentInterface $document,
+        public readonly DocumentInterface $document,
     )
     {
         $this->inspect($this->document);
