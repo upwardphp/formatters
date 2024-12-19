@@ -12,7 +12,6 @@ it('should be able choose CPF Document', function (string $value): void {
 })->with([
     '12345678901',
     '02345678901',
-    '0145659878',
 ]);
 
 it('should be able choose CNPJ Document', function (string $value): void {
@@ -23,5 +22,14 @@ it('should be able choose CNPJ Document', function (string $value): void {
 })->with([
     '27001167000123',
     '02669370000141',
-    '2669370000141',
+]);
+
+it('should not be able choose Document', function (string $value) {
+    $document = document_choose($value);
+
+    expect(value: $document)
+        ->toBeNull();
+})->with([
+    'foo',
+    'bar1',
 ]);

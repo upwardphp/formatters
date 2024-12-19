@@ -2,7 +2,7 @@
 
 namespace Upward\Formatters\Helpers\Document;
 
-use Exception;
+use Throwable;
 use Upward\Formatters\Document;
 use Upward\Formatters\Documents\{CnpjDocument, CpfDocument};
 use Upward\Formatters\Exceptions\Documents\InvalidDocumentException;
@@ -12,12 +12,8 @@ function choose(string $value): Document|null
 {
     $value = only_digits($value);
 
-    if (strlen(string: $value) < 11) {
-        $value = str_pad(string: $value, length: 11, pad_string: '0', pad_type: STR_PAD_LEFT);
-    }
-
-    if (strlen(string: $value) > 11) {
-        $value = str_pad(string: $value, length: 14, pad_string: '0', pad_type: STR_PAD_LEFT);
+    if (!$value) {
+        return null;
     }
 
     try {
@@ -28,7 +24,7 @@ function choose(string $value): Document|null
                 default => InvalidDocumentException::class,
             }
         );
-    } catch (Exception) {
+    } catch (Throwable) {
         return null;
     }
 }
