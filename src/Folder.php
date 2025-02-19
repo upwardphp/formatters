@@ -15,7 +15,7 @@ class Folder implements Countable, IteratorAggregate
     /**
      * @var DocumentInterface[]
      */
-    protected array $documents;
+    protected array $documents = [];
 
     public static function with(array $documents): self
     {
